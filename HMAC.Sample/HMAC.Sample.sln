@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMAC.Sample", "HMAC.Sample\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMAC.Sample.Tests", "HMAC.Sample.Tests\HMAC.Sample.Tests.csproj", "{437DC625-D735-4622-888D-404CB2BF87F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HMAC.Authorization", "HMAC.Authorization\HMAC.Authorization.csproj", "{5D245BA0-ACF8-4883-BFA0-675BDF871E91}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{437DC625-D735-4622-888D-404CB2BF87F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{437DC625-D735-4622-888D-404CB2BF87F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{437DC625-D735-4622-888D-404CB2BF87F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D245BA0-ACF8-4883-BFA0-675BDF871E91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D245BA0-ACF8-4883-BFA0-675BDF871E91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D245BA0-ACF8-4883-BFA0-675BDF871E91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D245BA0-ACF8-4883-BFA0-675BDF871E91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
