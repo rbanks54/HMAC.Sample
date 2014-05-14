@@ -13,9 +13,9 @@ namespace HMAC.Authorization
                 return await base.SendAsync(request, cancellationToken);
             }
 
-            byte[] content = await request.Content.ReadAsByteArrayAsync();
-            MD5 md5 = MD5.Create();
-            byte[] hash = md5.ComputeHash(content);
+            var content = await request.Content.ReadAsByteArrayAsync();
+            var md5 = MD5.Create();
+            var hash = md5.ComputeHash(content);
             request.Content.Headers.ContentMD5 = hash;
             var response = await base.SendAsync(request, cancellationToken);
             return response;

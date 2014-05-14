@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Hit the magic button to trigger an Ajax call</h2>
+
+<button id="clickMe">Some text</button>
+
+<div id="result">No data yet</div>
+
+@section scripts
+{
+<script>
+    $('#clickMe').click(function() {
+        alert('clicked. Nothing here yet');
+    });
+</script>    
+}

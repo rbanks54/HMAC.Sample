@@ -97,6 +97,7 @@
     <Compile Include="FakeInnerHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerSideHandler.cs" />
+    <Compile Include="SigningRequests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

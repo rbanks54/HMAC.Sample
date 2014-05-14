@@ -72,7 +72,6 @@ namespace HMAC.Sample.Tests
                 string.Format("{0}:{1}", userId, messageSignature)
             );
 
-            var context = Substitute.For<HttpContextBase>();
             var innerhandler = new FakeInnerHandler();
             innerhandler.Message = new HttpResponseMessage(HttpStatusCode.OK);
             var client = new HttpMessageInvoker(new HmacAuthenticationHandler(

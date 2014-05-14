@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
+using HMAC.Authorization;
 
 namespace HMAC.Sample.Controllers
 {
@@ -15,10 +17,22 @@ namespace HMAC.Sample.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/values/5
-        public string Get(int id)
+        public async Task<string> Get(int id)
         {
-            return "value";
+            var signingHandler = new HmacSigningHandler(new ApiKeyRepository(), 
+                new CanonicalRepresentationBuilder(),
+                new HmacSignatureCalculator());
+            signingHandler.UserId = "89s8i2k";
+
+            var client = new HttpClient(new RequestContentMd5Handler()
+            {
+                InnerHandler = signingHandler
+            });
+
+            var result = await client.GetAsync("http://localhost:12036/api/values");
+            var json = await result.Content.ReadAsStringAsync();
+            
+            return "retrieved: " + json;
         }
 
         // POST api/values

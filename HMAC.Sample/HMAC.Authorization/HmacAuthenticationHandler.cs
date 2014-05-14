@@ -48,7 +48,7 @@ namespace HMAC.Authorization
                 return false;
             }
 
-            var representation = representationBuilder.BuildRequestRepresentation(requestMessage);
+            var representation = representationBuilder.BuildRequestRepresentation(requestMessage, userId);
             if (representation == null)
             {
                 return false;

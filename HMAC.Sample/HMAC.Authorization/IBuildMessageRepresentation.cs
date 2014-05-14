@@ -4,6 +4,6 @@ namespace HMAC.Authorization
 {
     public interface IBuildMessageRepresentation
     {
-        string BuildRequestRepresentation(HttpRequestMessage requestMessage);
+        string BuildRequestRepresentation(HttpRequestMessage requestMessage, string userId);
     }
 }

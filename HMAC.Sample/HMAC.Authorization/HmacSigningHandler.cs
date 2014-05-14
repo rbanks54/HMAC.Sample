@@ -29,14 +29,14 @@ namespace HMAC.Authorization
             {
                 request.Headers.Add(Configuration.ApiKeyHeader, UserId);
             }
-            request.Headers.Date = new DateTimeOffset(DateTime.Now,DateTime.Now-DateTime.UtcNow);
-            var representation = representationBuilder.BuildRequestRepresentation(request);
+            request.Headers.Date = new DateTimeOffset(DateTime.UtcNow);
+            var representation = representationBuilder.BuildRequestRepresentation(request, UserId);
             var hashedApiKey = apiKeyRepository.HashedApiKeyForUser(UserId);
             string signature = signatureCalculator.Signature(hashedApiKey,representation);
 
-            var header = new AuthenticationHeaderValue(Configuration.AuthenticationScheme, signature);
+            request.Headers.Authorization = new AuthenticationHeaderValue(Configuration.AuthenticationScheme,
+                string.Format("{0}:{1}", UserId, signature));
 
-            request.Headers.Authorization = header;
             return base.SendAsync(request, cancellationToken);
         }
     }
