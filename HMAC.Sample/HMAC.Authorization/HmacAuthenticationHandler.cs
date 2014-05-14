@@ -84,7 +84,8 @@ namespace HMAC.Authorization
                 return hashHeader == null || hashHeader.Length == 0;
             }
             var hash = await Md5Helper.ComputeHash(requestMessage.Content);
-            return hash.SequenceEqual(hashHeader);
+            var result = hash.SequenceEqual(hashHeader);
+            return result;
         }
 
         private bool IsDateValid(HttpRequestMessage requestMessage)

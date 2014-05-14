@@ -12,7 +12,7 @@ namespace HMAC.Authorization
         /// HTTP METHOD\n +
         /// Content-MD5\n +  
         /// Timestamp\n +
-        /// ApiKey\n +
+        /// UserId\n +
         /// Request URI
         /// </summary>
         /// <returns></returns>
@@ -35,12 +35,12 @@ namespace HMAC.Authorization
                 : Convert.ToBase64String(requestMessage.Content.Headers.ContentMD5);
 
             var httpMethod = requestMessage.Method.Method;
-            var apiKey = requestMessage.Headers.Authorization.Parameter.Split(':')[0];
+            var userId = requestMessage.Headers.Authorization.Parameter.Split(':')[0];
             var uri = requestMessage.RequestUri.AbsolutePath.ToLower();
             // you may need to add more headers if thats required for security reasons
             var representation = String.Join("\n", httpMethod,
                 md5, date.ToString(CultureInfo.InvariantCulture),
-                apiKey, uri);
+                userId, uri);
             
             return representation;
         }

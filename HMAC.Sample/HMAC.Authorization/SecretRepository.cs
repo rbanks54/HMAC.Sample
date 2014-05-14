@@ -26,7 +26,8 @@ namespace HMAC.Authorization
             return hashed;
         }
 
-        //TODO: Workout why we hash the secrets? (used to be username/password, so maybe that's why)
+        //We hash the API Key (secret) so it's not sent unencrypted over the wire
+        //Prevents people sniffing the key and spoofing auth messages
         private string ComputeHash(string inputData, HashAlgorithm algorithm)
         {
             byte[] inputBytes = Encoding.UTF8.GetBytes(inputData);
