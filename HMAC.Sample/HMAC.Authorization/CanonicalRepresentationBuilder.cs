@@ -9,23 +9,30 @@ namespace HMAC.Authorization
     {
         /// <summary>
         /// Builds message representation as follows:
-        /// HTTP METHOD\n +
-        /// Content-MD5\n +  
-        /// Timestamp\n +
-        /// UserId\n +
+        /// HTTP METHOD + | +
+        /// Content-MD5 + | + 
+        /// Timestamp + | +
+        /// UserId + | +
         /// Request URI
         /// </summary>
         /// <returns></returns>
         public string BuildRequestRepresentation(HttpRequestMessage requestMessage, string userId)
         {
-            var valid = IsRequestValid(requestMessage);
-            if (!valid)
-            {
+            if (!requestMessage.Headers.Date.HasValue && !requestMessage.Headers.Contains("X-Date"))
                 return null;
-            }
 
-            //We check if the date header has a value in the IsRequestValid method
-            var date = requestMessage.Headers.Date.Value.UtcDateTime;
+            DateTime date;
+            if (requestMessage.Headers.Date.HasValue)
+            {
+                date = requestMessage.Headers.Date.Value.UtcDateTime;
+            }
+            else
+            {
+                var success = DateTime.TryParse(requestMessage.Headers.GetValues("X-Date").First(), CultureInfo.InvariantCulture,
+                    DateTimeStyles.AdjustToUniversal, out date);
+                if (!success)
+                    return null;
+            }
 
             var md5 = requestMessage.Content == null ||
                 requestMessage.Content.Headers.ContentMD5 == null ?  "" 
@@ -33,22 +40,11 @@ namespace HMAC.Authorization
 
             var httpMethod = requestMessage.Method.Method;
             var uri = requestMessage.RequestUri.AbsolutePath.ToLower();
-            var representation = String.Join("\n", httpMethod,
+            var representation = String.Join("|", httpMethod,
                 md5, date.ToString(CultureInfo.InvariantCulture),
                 userId, uri);
             
             return representation;
-        }
-
-        private bool IsRequestValid(HttpRequestMessage requestMessage)
-        {
-            if (!requestMessage.Headers.Contains(Configuration.ApiKeyHeader))
-                return false;
-
-            if (!requestMessage.Headers.Date.HasValue)
-                return false;
-
-            return true;
         }
     }
 }

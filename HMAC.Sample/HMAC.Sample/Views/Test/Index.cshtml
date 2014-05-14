@@ -1,19 +1,91 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
 
 <h2>Hit the magic button to trigger an Ajax call</h2>
 
-<button id="clickMe">Some text</button>
-
+<div><button id="clickMe">Use unsecured API</button></div>
 <div id="result">No data yet</div>
+
+<div>
+    <button id="clickMe2">Use secured API, insecurely</button>
+    <button id="clickMe3">Use secured API, securely</button>
+</div>
+<div id="result2">No data yet</div>
 
 @section scripts
 {
-<script>
-    $('#clickMe').click(function() {
-        alert('clicked. Nothing here yet');
-    });
-</script>    
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha1.js"></script>
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/components/enc-base64-min.js"></script>
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha256.js"></script>
+    <script src="http://momentjs.com/downloads/moment.min.js"></script>
+    
+    <script>
+        var hash = CryptoJS.MD5("Message");
+        var hash = CryptoJS.SHA1("Message");
+        hash.toString(CryptoJS.enc.Base64);
+        var hash = CryptoJS.HmacSHA256("Message", "Secret Passphrase");
+    </script>
+
+    <script>
+        $('#clickMe').click(function () {
+            $.ajax({
+                url: 'api/values/1',
+            }).done(function (data) {
+                $('#result').text(data);
+            });
+        });
+
+        $('#clickMe2').click(function () {
+            $.ajax({
+                url: 'api/values',
+                headers: {
+                    'Authorization': 'ApiAuth 1234:sdflsdlfj='
+                }
+            }).done(function (data) {
+                $('#result2').text(data);
+            }).fail(function (xhr) {
+                $('#result2').text('Failed with: ' + xhr.status);
+            });
+        });
+
+        $('#clickMe3').click(function () {
+            var dateValue = moment.utc();
+            var date = dateValue.toDate().toUTCString();
+            //var body = { a: 1 };
+            //var contentString = JSON.stringify(body);
+            //var contentMd5 = CryptoJS.MD5(contentString);
+            //var contentMd5Hash = contentMd5.toString(CryptoJS.enc.Base64);
+            var url = '/api/values';
+
+            //This should not be stored in plain text (obviously!) but would come from the app somewhere.
+            var hashedApiKey = CryptoJS.SHA1('v87o2jh388d').toString(CryptoJS.enc.Base64);
+
+            var invariantDate = moment(dateValue).format('MM/DD/YYYY HH:mm:ss');
+
+            //for POST
+            //var messageParts = ['GET', contentMd5Hash, invariantDate, '1234', url.toLowerCase()];
+            var messageParts = ['GET', '', invariantDate, '1234', url.toLowerCase()];
+            var messageString = messageParts.join('|');
+            var hmacHash = CryptoJS.HmacSHA256(messageString, hashedApiKey).toString(CryptoJS.enc.Base64);
+
+            $.ajax({
+                url: 'api/values',
+                headers: {
+                    'Authorization': 'ApiAuth 1234:' + hmacHash,
+                    'X-Date': date
+                    //For POST uncommment..
+                    //'Content-MD5': contentMd5Hash
+                }
+                //for POST uncomment
+                //data: contentString
+            }).done(function (data) {
+                $('#result2').text(data);
+            }).fail(function (xhr) {
+                $('#result2').text('Failed with: ' + xhr.status);
+            });
+        });
+
+    </script>
 }

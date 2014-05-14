@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -91,7 +92,20 @@ namespace HMAC.Authorization
         private bool IsDateValid(HttpRequestMessage requestMessage)
         {
             var utcNow = DateTime.UtcNow;
-            var date = requestMessage.Headers.Date.Value.UtcDateTime;
+            if (!requestMessage.Headers.Date.HasValue && !requestMessage.Headers.Contains("X-Date"))
+                return false;
+
+            DateTime date;
+            if (requestMessage.Headers.Date.HasValue)
+            {
+                date = requestMessage.Headers.Date.Value.UtcDateTime;
+            }
+            else
+            {
+                var success = DateTime.TryParse(requestMessage.Headers.GetValues("X-Date").First(), CultureInfo.InvariantCulture,
+                    DateTimeStyles.RoundtripKind, out date);
+                if (!success) return false;
+            }
             if (date >= utcNow.AddMinutes(Configuration.ValidityPeriodInMinutes)
                 || date <= utcNow.AddMinutes(-Configuration.ValidityPeriodInMinutes))
             {

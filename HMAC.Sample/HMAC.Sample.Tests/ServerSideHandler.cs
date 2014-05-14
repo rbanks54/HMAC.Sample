@@ -58,7 +58,7 @@ namespace HMAC.Sample.Tests
             var md5 = Convert.ToBase64String(request.Content.Headers.ContentMD5);
 
             var hashedApiKey = ComputeSHA1("v87o2jh388d");
-            var representation =   String.Join("\n", "POST",
+            var representation =   String.Join("|", "POST",
                 md5, 
                 request.Headers.Date.Value.UtcDateTime.ToString(CultureInfo.InvariantCulture),
                 "1234", 

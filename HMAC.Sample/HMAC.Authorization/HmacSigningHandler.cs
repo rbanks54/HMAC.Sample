@@ -25,10 +25,6 @@ namespace HMAC.Authorization
         protected  override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
                                                                 System.Threading.CancellationToken cancellationToken)
         {
-            if (!request.Headers.Contains(Configuration.ApiKeyHeader))
-            {
-                request.Headers.Add(Configuration.ApiKeyHeader, UserId);
-            }
             request.Headers.Date = new DateTimeOffset(DateTime.UtcNow);
             var representation = representationBuilder.BuildRequestRepresentation(request, UserId);
             var hashedApiKey = apiKeyRepository.HashedApiKeyForUser(UserId);
