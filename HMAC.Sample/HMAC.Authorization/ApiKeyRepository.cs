@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HMAC.Authorization
 {
-    public class SecretRepository : ISecretRepository
+    public class ApiKeyRepository : IApiKeyRepository
     {
         private readonly IDictionary<string, string> repoData
             = new Dictionary<string, string>()
@@ -14,20 +14,22 @@ namespace HMAC.Authorization
                       {"89s8i2k","8ds7fgwnlksaas"}
                   };
 
-        public string GetSecretForUser(string apiKey)
+
+        //We hash the API Key so it's not sent unencrypted over the wire
+        //Prevents people sniffing the key and spoofing auth messages
+        //It also adds a little more variability into our message signature calculation
+        public string HashedApiKeyForUser(string userId)
         {
-            if (!repoData.ContainsKey(apiKey))
+            if (!repoData.ContainsKey(userId))
             {
                 return null;
             }
 
-            var secret = repoData[apiKey];
-            var hashed = ComputeHash(secret, new SHA1CryptoServiceProvider());
+            var apiKey = repoData[userId];
+            var hashed = ComputeHash(apiKey, new SHA1CryptoServiceProvider());
             return hashed;
         }
 
-        //We hash the API Key (secret) so it's not sent unencrypted over the wire
-        //Prevents people sniffing the key and spoofing auth messages
         private string ComputeHash(string inputData, HashAlgorithm algorithm)
         {
             byte[] inputBytes = Encoding.UTF8.GetBytes(inputData);

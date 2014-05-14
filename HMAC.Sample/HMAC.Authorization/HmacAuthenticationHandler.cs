@@ -12,15 +12,15 @@ namespace HMAC.Authorization
     {
         private const string UnauthorizedMessage = "Unauthorized request";
 
-        private readonly ISecretRepository secretRepository;
+        private readonly IApiKeyRepository apiKeyRepository;
         private readonly IBuildMessageRepresentation representationBuilder;
         private readonly ICalculateSignature signatureCalculator;
 
-        public HmacAuthenticationHandler(ISecretRepository secretRepository,
+        public HmacAuthenticationHandler(IApiKeyRepository apiKeyRepository,
             IBuildMessageRepresentation representationBuilder,
             ICalculateSignature signatureCalculator)
         {
-            this.secretRepository = secretRepository;
+            this.apiKeyRepository = apiKeyRepository;
             this.representationBuilder = representationBuilder;
             this.signatureCalculator = signatureCalculator;
         }
@@ -40,10 +40,10 @@ namespace HMAC.Authorization
             var paramValues = authValue.Split(':');
             if (paramValues.Length != 2) return false;
 
-            var username = paramValues[0];
+            var userId = paramValues[0];
             var requestSignature = paramValues[1];
-            var secret = secretRepository.GetSecretForUser(username);
-            if (secret == null)
+            var apiKeyHash = apiKeyRepository.HashedApiKeyForUser(userId);
+            if (apiKeyHash == null)
             {
                 return false;
             }
@@ -60,7 +60,7 @@ namespace HMAC.Authorization
                 return false;
             }
 
-            var signature = signatureCalculator.Signature(secret, representation);
+            var signature = signatureCalculator.Signature(apiKeyHash, representation);
 
             if(MemoryCache.Default.Contains(signature))
             {
@@ -70,7 +70,7 @@ namespace HMAC.Authorization
             var result = requestSignature == signature;
             if (result == true)
             {
-                MemoryCache.Default.Add(signature, username,
+                MemoryCache.Default.Add(signature, userId,
                                         DateTimeOffset.UtcNow.AddMinutes(Configuration.ValidityPeriodInMinutes));
             }
             return result;

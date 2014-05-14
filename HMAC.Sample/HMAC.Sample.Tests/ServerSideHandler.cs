@@ -33,7 +33,7 @@ namespace HMAC.Sample.Tests
                 Message = new HttpResponseMessage(HttpStatusCode.OK)
             };
             var client = new HttpMessageInvoker(new HmacAuthenticationHandler(
-                        new SecretRepository(),
+                        new ApiKeyRepository(),
                         new CanonicalRepresentationBuilder(),
                         new HmacSignatureCalculator())
             {
@@ -76,7 +76,7 @@ namespace HMAC.Sample.Tests
             var innerhandler = new FakeInnerHandler();
             innerhandler.Message = new HttpResponseMessage(HttpStatusCode.OK);
             var client = new HttpMessageInvoker(new HmacAuthenticationHandler(
-                        new SecretRepository(),
+                        new ApiKeyRepository(),
                         new CanonicalRepresentationBuilder(),
                         signatureCaclulator)
             {

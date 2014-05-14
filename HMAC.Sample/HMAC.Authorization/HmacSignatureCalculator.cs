@@ -6,15 +6,15 @@ namespace HMAC.Authorization
 {
     public class HmacSignatureCalculator : ICalculateSignature
     {
-        public string Signature(string secret, string value)
+        public string Signature(string hashedApiKey, string messageRepresentation)
         {
-            var secretBytes = Encoding.UTF8.GetBytes(secret);
-            var valueBytes = Encoding.UTF8.GetBytes(value);
+            var key = Encoding.UTF8.GetBytes(hashedApiKey);
+            var message = Encoding.UTF8.GetBytes(messageRepresentation);
             string signature;
 
-            using (var hmac = new HMACSHA256(secretBytes))
+            using (var hmac = new HMACSHA256(key))
             {
-                var hash = hmac.ComputeHash(valueBytes);
+                var hash = hmac.ComputeHash(message);
                 signature = Convert.ToBase64String(hash);
             }
 

@@ -2,6 +2,6 @@
 {
     public interface ICalculateSignature
     {
-        string Signature(string secret, string value);
+        string Signature(string hashedApiKey, string messageRepresentation);
     }
 }
