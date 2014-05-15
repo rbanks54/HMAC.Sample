@@ -110,6 +110,9 @@ namespace HMAC.Sample
         private string ReadVersionFromMediaType(HttpRequestMessage request)
         {
             var acceptHeader = request.Headers.Accept;
+            if (acceptHeader.Count == 0)
+                return "1";
+
 
             var v1Headers = new[] {@"application/json", @"text/json", @"text/plain"};
             var v2Headers = new[] { @"application/bson"};
