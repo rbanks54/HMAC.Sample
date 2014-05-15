@@ -31,7 +31,7 @@ namespace HMAC.Sample.Controllers
 
     public class VersionedDataController : ApiController
     {
-        public Contact LoadAContactFromTheDatabase()
+        private Contact LoadAContactFromTheDatabase()
         {
             var contact = new Contact()
             {
@@ -49,7 +49,7 @@ namespace HMAC.Sample.Controllers
 
         // GET: api/VersionedData
         [ResponseType(typeof(ContactViewModel))]
-        public virtual IHttpActionResult Get()
+        public IHttpActionResult Get()
         {
             var contact = LoadAContactFromTheDatabase();
             var contactViewModel = new ContactViewModel()

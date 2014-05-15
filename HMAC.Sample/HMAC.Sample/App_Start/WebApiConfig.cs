@@ -72,6 +72,8 @@ namespace HMAC.Sample
 
             //Custom code to configure which controller is called
             config.Services.Replace(typeof(IHttpControllerSelector),new ApiVersioningSelector(config));
+
+            config.MessageHandlers.Add(new NotAcceptableContentNegotiationHandler(config));
         }
 
         private static void CreateJsonMediaTypes(JsonMediaTypeFormatter jsonFormatter)

@@ -15,7 +15,7 @@ namespace HMAC.Sample.Controllers
 
     public class VersionedDataV2Controller : ApiController
     {
-        public Contact LoadAContactFromTheDatabase()
+        private Contact LoadAContactFromTheDatabase()
         {
             var contact = new Contact()
             {
