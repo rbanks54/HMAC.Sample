@@ -1,6 +1,7 @@
 ﻿//needed for .GetSubRoutes() extension method
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -57,7 +58,9 @@ namespace HMAC.Sample
 
                 if (controllers.TryGetValue(controllerName, out controllerDescriptor))
                 {
-                    return controllerDescriptor;
+                    if (IsAcceptedMediaType(controllerDescriptor, request))
+                        return controllerDescriptor;
+                    throw new HttpResponseException(HttpStatusCode.NotAcceptable);
                 }
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
@@ -139,6 +142,37 @@ namespace HMAC.Sample
             }
             return "1";
         }
+
+        private bool IsAcceptedMediaType(HttpControllerDescriptor controllerDescriptor, HttpRequestMessage request)
+        {
+            var cxName = controllerDescriptor.ControllerName;
+            var acceptHeader = request.Headers.Accept;
+            if (acceptHeader.Count == 0)
+                return true;
+
+            var alwaysAccepted = new[] { "application/json", "text/json", "application/bson" };
+
+            var regularExpression = new Regex(@"application\/vnd\.bccAdsystems\.([a-z]+).*",
+                RegexOptions.IgnoreCase);
+
+            foreach (var mime in acceptHeader)
+            {
+                if (alwaysAccepted.Contains(mime.MediaType)) return true;
+
+                var match = regularExpression.Match(mime.MediaType);
+                if (match.Success)
+                {
+                    var resource = match.Groups[1].Value;
+                    if (resource == "") return false;
+
+                    //for this sample we want to always check that we're using 'contact'
+                    return cxName.StartsWith("versioneddata",StringComparison.InvariantCultureIgnoreCase)
+                        && resource.ToLowerInvariant().Equals("contact",StringComparison.InvariantCultureIgnoreCase);
+                }
+            }
+            return false;
+        }
+
 
     }
 }

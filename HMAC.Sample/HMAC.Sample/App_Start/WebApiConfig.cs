@@ -78,7 +78,7 @@ namespace HMAC.Sample
 
         private static void CreateJsonMediaTypes(JsonMediaTypeFormatter jsonFormatter)
         {
-            //Register your media types
+            //You can publicly register your media types if you really want to.
             //Vendor specific media types http://www.iana.org/cgi-bin/mediatypes.pl
             var mediaTypes = new List<string> {
                 "application/vnd.bccAdsystems.contact", //non-specific version - effectively v1.
@@ -86,8 +86,14 @@ namespace HMAC.Sample
                 "application/vnd.bccAdsystems.contact.v1+json", //specific version and format type
                 "application/vnd.bccAdsystems.contact.v2", 
                 "application/vnd.bccAdsystems.contact.v2+json",
-
+                "application/vnd.bccAdsystems.fred.v2+json"
             };
+
+            //To make maintenance easier it wouldn't take much to programatically generate the media types
+            //with different extensions.
+            //Could also use reflection to indicate what 'resource' representations are allowed on a route
+            //And check that in the ApiVersioningSelector class.
+
             foreach (var mediaType in mediaTypes)
             {
                 jsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue(mediaType));
