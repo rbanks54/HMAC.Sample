@@ -11,9 +11,9 @@ namespace HMAC.Authorization
             = new Dictionary<string, string>()
                   {
                       {"1234","v87o2jh388d"},
-                      {"89s8i2k","8ds7fgwnlksaas"}
+                      {"89s8i2k","8ds7fgwnlksaas"},
+                      {"symphony/729117","kdsfkjdshfksdf873"}
                   };
-
 
         //We hash the API Key so it's not sent unencrypted over the wire
         //Prevents people sniffing the key and spoofing auth messages
