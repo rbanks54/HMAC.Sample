@@ -80,7 +80,7 @@ namespace HMAC.Sample
         {
             //Register your media types
             //Vendor specific media types http://www.iana.org/cgi-bin/mediatypes.pl
-            var mediaTypes = new List<string> { 
+            var mediaTypes = new List<string> {
                 "application/vnd.bccAdsystems.contact", //non-specific version - effectively v1.
                 "application/vnd.bccAdsystems.contact+json", //non-specific version - specific content type.
                 "application/vnd.bccAdsystems.contact.v1+json", //specific version and format type

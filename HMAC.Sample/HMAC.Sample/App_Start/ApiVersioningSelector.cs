@@ -112,9 +112,8 @@ namespace HMAC.Sample
             var acceptHeader = request.Headers.Accept;
             if (acceptHeader.Count == 0)
                 return "1";
-
-
-            var v1Headers = new[] {@"application/json", @"text/json", @"text/plain"};
+            
+            var v1Headers = new[] {@"application/json", @"text/json"};
             var v2Headers = new[] { @"application/bson"};
             var defaultFormatVersions = new Dictionary<string, string>() {{"+json", "1"}, {"+bson", "2"}};
 
@@ -138,7 +137,7 @@ namespace HMAC.Sample
                         return defaultFormatVersions[format];
                 }
             }
-            return "";
+            return "1";
         }
 
     }

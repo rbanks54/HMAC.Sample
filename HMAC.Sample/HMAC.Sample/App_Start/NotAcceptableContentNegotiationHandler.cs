@@ -40,7 +40,7 @@ namespace HMAC.Sample
                 .Any(formatter => acceptHeader.Any(mediaType => formatter.SupportedMediaTypes.Contains(mediaType)
                   || formatter.MediaTypeMappings.Any(m => m.TryMatchMediaType(request) > 0)));
 
-            if (!hasFormatterForRequestedMediaType)
+            if (!hasFormatterForRequestedMediaType && !acceptHeader.Any(h => h.MediaType.Equals(@"*/*")))
             {
                 return Task<HttpResponseMessage>.Factory.StartNew(() => new HttpResponseMessage(HttpStatusCode.NotAcceptable));
             }
