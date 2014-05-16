@@ -150,7 +150,7 @@ namespace HMAC.Sample
             if (acceptHeader.Count == 0)
                 return true;
 
-            var alwaysAccepted = new[] { "application/json", "text/json", "application/bson" };
+            var alwaysAccepted = new[] { "application/json", "text/json", "application/bson", "*/*" };
 
             var regularExpression = new Regex(@"application\/vnd\.bccAdsystems\.([a-z]+).*",
                 RegexOptions.IgnoreCase);

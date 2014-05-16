@@ -74,6 +74,8 @@ namespace HMAC.Sample
             config.Services.Replace(typeof(IHttpControllerSelector),new ApiVersioningSelector(config));
 
             config.MessageHandlers.Add(new NotAcceptableContentNegotiationHandler(config));
+
+            config.Filters.Add(new CustomApiExceptionAttribute());
         }
 
         private static void CreateJsonMediaTypes(JsonMediaTypeFormatter jsonFormatter)
