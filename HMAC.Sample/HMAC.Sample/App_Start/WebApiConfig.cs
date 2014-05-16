@@ -32,6 +32,18 @@ namespace HMAC.Sample
                 defaults: new { controller = "values" }
             );
 
+            config.Routes.MapHttpRoute(
+                name: "SecureImportApi",
+                routeTemplate: "api/hmacimportdata",
+                constraints: null,
+                handler: new HmacAuthenticationHandler(new ApiKeyRepository(),
+                    new CanonicalRepresentationBuilder(), new HmacSignatureCalculator())
+                {
+                    InnerHandler = new HttpControllerDispatcher(config)
+                },
+                defaults: new { controller = "hmacimportdata" }
+            );
+
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
@@ -71,7 +83,7 @@ namespace HMAC.Sample
             bsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/vnd.bccAdsystems.contact.v2+bson"));
 
             //Custom code to configure which controller is called
-            config.Services.Replace(typeof(IHttpControllerSelector),new ApiVersioningSelector(config));
+            config.Services.Replace(typeof(IHttpControllerSelector), new ApiVersioningSelector(config));
 
             config.MessageHandlers.Add(new NotAcceptableContentNegotiationHandler(config));
 

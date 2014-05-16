@@ -93,20 +93,21 @@
             var contentString = JSON.stringify(body);
             var contentMd5 = CryptoJS.MD5(contentString);
             var contentMd5Hash = contentMd5.toString(CryptoJS.enc.Base64);
-            var url = '/api/importdata';
+            var url = '/api/hmacimportdata';
 
             //This should not be stored in plain text (obviously!) but would come from the app somewhere.
             var hashedApiKey = CryptoJS.SHA1('v87o2jh388d').toString(CryptoJS.enc.Base64);
 
             var invariantDate = moment(dateValue).format('MM/DD/YYYY HH:mm:ss');
+            var httpVerb = 'POST';
 
-            var messageParts = ['GET', contentMd5Hash, invariantDate, '1234', url.toLowerCase()];
+            var messageParts = [httpVerb, contentMd5Hash, invariantDate, '1234', url.toLowerCase()];
             var messageString = messageParts.join('|');
             var hmacHash = CryptoJS.HmacSHA256(messageString, hashedApiKey).toString(CryptoJS.enc.Base64);
 
             $.ajax({
                 url: url,
-                type:'POST',
+                type:httpVerb,
                 headers: {
                     'Authorization': 'ApiAuth 1234:' + hmacHash,
                     'X-Date': date,
