@@ -79,8 +79,8 @@ namespace HMAC.Sample
             //Binary JSON serialisation - added in v2 of the API
             //Why? Maybe we wanted to include an embedded jpeg of the contact in the response 
             //so there are less server requests.
-            bsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/vnd.bccAdsystems.contact+bson"));
-            bsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/vnd.bccAdsystems.contact.v2+bson"));
+            bsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/vnd.sampleOrg.contact+bson"));
+            bsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/vnd.sampleOrg.contact.v2+bson"));
 
             //Custom code to configure which controller is called
             config.Services.Replace(typeof(IHttpControllerSelector), new ApiVersioningSelector(config));
@@ -95,12 +95,12 @@ namespace HMAC.Sample
             //You can publicly register your media types if you really want to.
             //Vendor specific media types http://www.iana.org/cgi-bin/mediatypes.pl
             var mediaTypes = new List<string> {
-                "application/vnd.bccAdsystems.contact", //non-specific version - effectively v1.
-                "application/vnd.bccAdsystems.contact+json", //non-specific version - specific content type.
-                "application/vnd.bccAdsystems.contact.v1+json", //specific version and format type
-                "application/vnd.bccAdsystems.contact.v2", 
-                "application/vnd.bccAdsystems.contact.v2+json",
-                "application/vnd.bccAdsystems.fred.v2+json"
+                "application/vnd.sampleOrg.contact", //non-specific version - effectively v1.
+                "application/vnd.sampleOrg.contact+json", //non-specific version - specific content type.
+                "application/vnd.sampleOrg.contact.v1+json", //specific version and format type
+                "application/vnd.sampleOrg.contact.v2", 
+                "application/vnd.sampleOrg.contact.v2+json",
+                "application/vnd.sampleOrg.fred.v2+json"
             };
 
             //To make maintenance easier it wouldn't take much to programatically generate the media types

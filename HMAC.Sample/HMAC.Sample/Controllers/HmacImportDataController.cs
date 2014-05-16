@@ -15,9 +15,20 @@ namespace HMAC.Sample.Controllers
 
         public HmacImportDataController()
         {
-            exceptionToThrow.ImportErrors.Add("Row1","OK");
-            exceptionToThrow.ImportErrors.Add("Row2", "Failed - incorrect time stamp");
-            exceptionToThrow.ImportErrors.Add("Row3", "Failed - index out of range");
+            var result = new ImportResult(66412, "Invalid start date");
+            var bookingResults = new ImportResult(55827, "Invalid start date");
+            bookingResults.InnerResults = new ImportResult[]
+            {
+                new ImportResult(1223, "Missing Insertion Rate for Bill / Pay"),
+                new ImportResult(1224),
+                new ImportResult(1225),
+                new ImportResult(1226),
+                new ImportResult(1227),
+                new ImportResult(1228, "Missing Insertion Rate for Bill / Pay")
+            };
+            result.InnerResults = new []{bookingResults};
+
+            exceptionToThrow.ImportResult = result;
         }
 
         public IHttpActionResult Post([FromBody]dynamic data)

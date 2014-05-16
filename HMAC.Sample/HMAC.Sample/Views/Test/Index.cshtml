@@ -107,12 +107,12 @@
 
             $.ajax({
                 url: url,
-                type:httpVerb,
+                type: httpVerb,
                 headers: {
                     'Authorization': 'ApiAuth 1234:' + hmacHash,
                     'X-Date': date,
                     'Content-MD5': contentMd5Hash,
-                    'Content-Type':'application/json'
+                    'Content-Type': 'application/json'
                 },
                 data: contentString
             }).done(function(data) {
@@ -124,13 +124,63 @@
 
 
         dataToPost = {
-            'someField': 'someValue',
-            'anotherField': 2,
-            'anObject': {
-                'field1': 'value1',
-                'field2': 'value2'
-            }
-        };
+            operation: 'Import',
+            direction: 'Request',
+            created: '2012-01-20T14:40:06+11:00',
+            timeZone: 'AEST',
+            schedules: {
+                ID: '66412',
+                startDate: '2013-10-08',
+                endDate: '2013-12-08',
+                weekCommencing: 'Sunday',
+                revision: '1',
+                bookings: [
+                    {
+                        ID: '55827',
+                        startDate: '2013-01-01',
+                        endDate: '2013-01-04',
+                        startTime: '18:00:00',
+                        endTime: '18:30:00',
+                        duration: '30',
+                        splits:
+                        {
+                            bills: [
+                                {
+                                    ID: '1223',
+                                    extID: '{0C22180D-E8A0-40F2-92A4-A3F06AC1B665}',
+                                    splitDate: '2013-01-01'
+                                },
+                                {
+                                    ID: '1224',
+                                    extID: '{0C22180D-E8A0-40F2-92A4-A3F06AC1B665}',
+                                    splitDate: '2013-01-01'
+                                },
+                                {
+                                    ID: '1225',
+                                    extID: '{0C22180D-E8A0-40F2-92A4-A3F06AC1B665}',
+                                    splitDate: '2013-01-01'
+                                }
+                            ],
+                            paidBookings: [
+                                {
+                                    ID: '1226',
+                                    extID: '{0C22180D-E8A0-40F2-92A4-A3F06AC1B665}',
+                                    splitDate: '2013-01-01'
+                                },
+                                {
+                                    ID: '1227',
+                                    extID: '{0C22180D-E8A0-40F2-92A4-A3F06AC1B665}',
+                                    splitDate: '2013-01-01'
+                                },
+                                {
+                                    ID: '1228',
+                                    extID: '{0C22180D-E8A0-40F2-92A4-A3F06AC1B665}',
+                                    splitDate: '2013-01-01'
+                                }
+                            ]
+                        }
+                    }]
+            }};
 
     </script>
 }

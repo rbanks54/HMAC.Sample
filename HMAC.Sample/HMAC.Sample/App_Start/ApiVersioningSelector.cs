@@ -107,8 +107,8 @@ namespace HMAC.Sample
         }
 
 
-        //Accept: application/vnd.bccAdsystems.{yourresource}[.v{version}[+json|+bson]]
-        //The regex: application\/vnd\.bccAdsystems\.([a-z]+)(\.v([0-9]+))*(\+json|\+bson)*
+        //Accept: application/vnd.sampleOrg.{yourresource}[.v{version}[+json|+bson]]
+        //The regex: application\/vnd\.sampleOrg\.([a-z]+)(\.v([0-9]+))*(\+json|\+bson)*
         //was manually tested at http://regexpal.com/
         private string ReadVersionFromMediaType(HttpRequestMessage request)
         {
@@ -120,7 +120,7 @@ namespace HMAC.Sample
             var v2Headers = new[] { @"application/bson"};
             var defaultFormatVersions = new Dictionary<string, string>() {{"+json", "1"}, {"+bson", "2"}};
 
-            var regularExpression = new Regex(@"application\/vnd\.bccAdsystems\.([a-z]+)(\.v([0-9]+))*(\+json|\+bson)*",
+            var regularExpression = new Regex(@"application\/vnd\.sampleOrg\.([a-z]+)(\.v([0-9]+))*(\+json|\+bson)*",
                 RegexOptions.IgnoreCase);
 
             foreach (var mime in acceptHeader)
@@ -152,7 +152,7 @@ namespace HMAC.Sample
 
             var alwaysAccepted = new[] { "application/json", "text/json", "application/bson", "*/*" };
 
-            var regularExpression = new Regex(@"application\/vnd\.bccAdsystems\.([a-z]+).*",
+            var regularExpression = new Regex(@"application\/vnd\.sampleOrg\.([a-z]+).*",
                 RegexOptions.IgnoreCase);
 
             foreach (var mime in acceptHeader)
